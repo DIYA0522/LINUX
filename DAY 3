@@ -1,0 +1,25 @@
+Process, services, jobs
+See all processes
+ps aux
+Filter for something (e.g., ssh): check ssh is running
+ps aux | grep ssh
+
+ps aux | grep [s]sh
+This trick works because grep [s]sh matches "ssh", but the command name won’t include plain "ssh", so it won’t list itself.
+👉 Now you can take that PID (e.g., 723) and use it with kill if you ever need to stop/restart ssh.
+
+SSH = the client (sender) → runs on your local machine (your laptop/terminal). You use it to initiate a connection.
+SSHD = the daemon (receiver) → runs on the remote machine (like your EC2). It sits there listening on port 22, waiting for SSH clients to connect.
+So the flow looks like this:
+Your terminal (ssh)  ---->  Internet  ---->  EC2 server (sshd on port 22)
+That’s why you always type something like:
+ssh ubuntu@<server-ip>
+👉 Your ssh client talks to the sshd daemon running on the server.
+Remember:
+If sshd stops on your EC2 → you lose the ability to connect (you’ll be locked out).
+
+⚠️ Pro tip: If you ever edit /etc/ssh/sshd_config, don’t close your current SSH session until you test with a new one — otherwise, a wrong config will lock you out.
+Live Process Monitoring
+top or htop
+shows the processes inside Linux
+——press q to quit
