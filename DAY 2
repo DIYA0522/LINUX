@@ -1,0 +1,111 @@
+umask = User Mask → it defines the default permissions for newly created files and directories.
+0002
+allows group collaboration:
+Owner and group can both edit.
+Others can only read.
+On Ubuntu EC2, your default user (ubuntu) usually belongs to its own group, so this setup is considered safe.
+
+Users in Linux
+Each person that needs access to the system = a user.
+Every user has:
+A username (like ubuntu)
+A home directory (/home/ubuntu)
+A UID (user ID number)
+Relation btw User and Group:
+Every user automatically gets a primary group with the same name.
+Example: user ubuntu → group ubuntu.
+You can also add users to secondary groups for extra permissions.
+groups ubuntu
+Might show:
+ubuntu : ubuntu sudo adm
+This means:
+Primary group = ubuntu
+Secondary groups = sudo, adm
+
+Check groups for a user:
+groups devuser
+
+Verify the group exists
+getent group devops
+Output like
+devops:x:1001:
+
+Verify the user exists
+getent passwd devuser
+Output like
+devuser:x:1001:1001::/home/devuser:/bin/bash
+
+Add a user to a group
+sudo usermod -aG devops devuser
+
+devops is group
+devuser is user
+Check groups for a user:
+groups devuser
+Output like
+devuser : devuser devops
+
+Quick rule:
+chown user file.txt→ changes user only.
+chown :group file.txt→ changes group only.
+chown user:group file.txt→ changes both
+
+So change ownership of myfile.txt
+sudo chown :devops myfile.txt
+Now group devops got ownership of myfile.txt
+To check the ownership of a file:
+ls -l myfile.txt
+Example output:
+-rw-r--r-- 1 ubuntu devops  20 Sep 17 10:30 file.txt
+ubuntu → the user (owner)
+devops → the group
+Who is root?
+root = the superuser in Linux (like “Administrator” in Windows).
+whoami —-gives the user
+If it prints root → you’re logged in as the superuser.
+If it prints ubuntu (in EC2), you’re a normal user
+ls /root (should fail) —— if not root user
+sudo ls /root (should work)
+/root is the home directory of the root user.
+If snap is installed, you’ll see a directory like this inside /
+root → you’re permanently the superuser (every command runs with full power).
+sudo → you’re a normal user, but you can run selected commands with superuser rights.
+
+Instead of adding sudo every time, you can start a root shell
+sudo -i starts a root login shell.
+sudo -i → then whoami again
+Now user is root
+exit
+To leave root user
+
+Permissions are controlled by the /etc/sudoers file.
+Users in the sudo group (on Ubuntu) can run sudo.
+Check with:
+groups
+If you see sudo, your account/user can use sudo.
+
+sudo vim /etc/hosts
+
+It’s a system file that maps hostnames → IP addresses.
+Acts like a mini DNS file.
+Example /etc/hosts content:
+127.0.0.1   localhost
+127.0.1.1   ubuntu
+If you add something like:
+192.168.1.10   myserver
+→ then you can ping myserver instead of remembering the IP.
+
+How to switch user
+su - devuser
+But to enter without password, login in shell as root using sudo
+sudo -i su - devuser
+Now inside $ shell instead of ubuntu
+$ is standard prompt for normal user, # is for root
+Confirm user using
+whoami
+pwd.   —print working directory
+If during sudo -i su - devuser
+Getting error like /home/devuser is not home directory, create it
+Sudo mkdir -p /home/devuser
+Sudo chown devuser:devgroup /home/devuser
+Sudo chmod 750 /home/devuser
