@@ -23,3 +23,71 @@ Live Process Monitoring
 top or htop
 shows the processes inside Linux
 ——press q to quit
+
+ps aux | grep sleep 
+used to find if any process named sleep is currently running
+
+to find and manage a process by name like sleep, ssh, nginx, java etc
+
+ps aux → lists all running processes on the system
+| → sends (pipes) that list to the next command
+grep sleep → filters the list and shows only processes containing the word sleep
+
+output will show 
+top line → the real sleep process (PID 1324)
+will contain line → the grep itself (ignore it)
+
+sleep 1000 &                  --a process sleep that will run in background for 1000 seconds
+
+& means in background 
+shell gives a prompt like
+[1] 1234
+--> [1] is the job number
+--> 1234 is the PID
+
+check it
+ps aux | grep sleep
+
+will give a pid,
+ can use it to kill that 
+
+
+Instead of ps aux | grep, can also try:
+pgrep <name> → shows only the PIDs.
+pkill <name> → directly kills the process
+
+
+See background jobs
+
+jobs
+
+shows running processes with job id
+[1]+ Running sleep 100 &
+
+Bring it to foreground
+fg %1                  --using the job number here
+
+Now shell is stuck again as sleep is running in foreground
+
+Stop it with ctrl + Z
+
+this pauses(suspends) the process
+
+To Resume it in bachground
+
+bg %1  --use job number
+now it continues running
+check with jobs
+
+
+Kill the job
+
+1. using pid
+kill -9 1234
+
+2. using by name
+killall sleep
+
+3. kill %1
+
+Note : sleep is the safest dummy process to play with fg/bg job control.
