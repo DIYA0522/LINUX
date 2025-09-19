@@ -1,0 +1,111 @@
+Why /etc is Important?
+Even if you don’t live there daily, you’ll often read or edit configs in /etc when:
+Setting up SSH → /etc/ssh/sshd_config
+Adding cron jobs → /etc/crontab
+Configuring Nginx/Apache → /etc/nginx/nginx.conf, /etc/httpd/
+Managing users → /etc/passwd, /etc/group
+👉 In DevOps, system setup and troubleshooting means you’ll open /etc files, change them, and restart services.
+
+Where You Work Most —
+/home/<user> →
+Your personal scripts, test files, projects.
+Safe zone → you can create, edit, delete without breaking the system.
+Example: ~/practice/script.sh
+
+Since you’re logged into the EC2 instance with the user ubuntu (default for Ubuntu servers), your personal workspace is:
+/home/ubuntu
+Path: /home/ubuntu/ → your user’s files, scripts, configs.
+So ubuntu is our default user in this instance. We can create other user as well
+pwd print working directory. — returns the directiry name
+whoami    — returns the current user’s name
+Since ubuntu is our user its also the home directory
+cd ..  — to return to root user if we are in some particular dir/folder
+
+cd /home
+ls -l
+total 4 is not the no of files, its total disk blocks used by the contents in directory
+Home has only one dir ubuntu
+That dir uses only one filesystem block (4096 bytes = 4 KB)
+
+cd /etc
+ls -l
+cd /var/log
+ls -l
+👉 Notice logs like syslog, auth.log, or messages. These are crucial in support/DevOps
+Always while creating new files or dir Do it in home dir
+Because cd .. — root directory owns many system directory like /etc, /var , /bin etc
+
+mkdir — create new directory/folder
+Touch — create new file
+cp — copy file
+Cp file1.txt new1txt — copies the same file with new name in the same location
+Cp file1.txt /home/ubuntu/practice2/testdir
+— copies file to another location
+mv file1.txt demo.txt — renames the file to demo.txt
+mv file1.txt testdir — moves the file to testdir folder
+Move + rename
+mv file1.txt testdir/newname.txt
+Moves the file into testdir and renames it at the same time.
+
+rm file.txt
+Deletes a file.
+rm -r foldername
+Deletes a folder recursively (careful with this ⚠️).
+
+Summary
+Copy + Paste → cp
+Rename → mv oldname newname
+Move → mv file targetdir/
+Delete → rm
+vim file1.txt
+Inside vim:
+Press i to go into Insert mode (you can type text).
+Type Hello DevOps.
+Press Esc to exit insert mode.
+Type :wq → Enter
+Quick trick if vim feels hard: you can also use nano (simpler editor):
+nano file1.txt
+Save with Ctrl+O, exit with Ctrl+X
+
+echo "Hello DevOps" > file1.txt
+cat file.txt → show entire file.
+head -n 5 file.txt → show first 5 lines.
+tail -n 5 file.txt → show last 5 lines.
+tail -f /var/log/syslog → follow file (used a lot for logs, e.g., /var/log/syslog)
+
+Permissions
+Every file/dir has 3 types of permissions → r (read), w (write), x (execute).
+They apply to 3 groups → u (owner), g (group), o (others).
+r = read (4)
+w = write (2)
+x = execute (1)
+-rw-r--r--  1 ubuntu ubuntu  20 Sep 15 23:10 file1.txt
+-
+rw- → owner can read/write
+r-- → group can only read
+r-- → others can only read
+Chmod 755 meaning
+Owner: rwx
+Group: r-x
+Others: r-x
+Chmod 600
+rw-
+—-
+—-
+
+drwxrwr-x
+d in starting indicates its a directory
++ Add
+- Remove
+= only
+Ownership
+Every file has an owner and a group.
+# Create a new user
+sudo useradd testuser
+#Create a new group
+sudo groupadd testgroup
+# Give ownership of file to testuser
+sudo chown testuser myfile.txt
+sudo chown testuser:testgroup yourfile.txt
+#Just change group
+sudo chgrp testgroup yourfile.txt
