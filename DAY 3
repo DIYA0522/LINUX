@@ -91,3 +91,44 @@ killall sleep
 3. kill %1
 
 Note : sleep is the safest dummy process to play with fg/bg job control.
+
+SERVICES
+systemctl  →  talks to systemd  →  manages services like ssh, nginx, mysql
+
+systemctl IS A command line tool that interacts with systemd
+systemd is the init system (the very first process started when Linux boots
+
+services are processes running in the background
+ex ssh is actual running process
+
+Think Of It like:-
+systemd = Boss
+systemctl = Phone you use to call the boss
+ssh/nginx/etc. = Workers
+
+
+Check service status
+   systemctl status ssh
+
+Start a service (immediately run it)
+   sudo systemctl start nginx
+
+Stop a service (immediately stop it)
+   sudo systemctl stop nginx
+
+Enable a service at boot (auto-start on reboot)
+   sudo systemctl enable nginx
+
+👉 Disable a service (don’t auto-start on reboot)
+   sudo systemctl disable nginx
+
+
+⚡ Extra useful commands:
+Restart a service:
+   sudo systemctl restart nginx
+
+Reload configuration (without full restart):
+   sudo systemctl reload nginx
+
+Check if service is enabled at boot:
+   systemctl is-enabled nginx
