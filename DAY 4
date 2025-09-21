@@ -1,0 +1,115 @@
+Networking is about how your computer communicates with other systems. In Linux, you use commands to check connectivity, transfer files, and see what services are running.
+
+Check if another machine or website is reachable
+  ping google.com
+
+Your system sends small "echo request" packets and check if he host is reachable.
+ Stop with Ctrl + C
+
+If the host replies, you’ll see response times.
+Every packet send is recieved back indicating connection with it is stable.
+
+curl
+  Purpose: Get data from a URL
+
+curl https://example.com
+  What happens:
+  Fetches the HTML or API response.
+  Great for testing if a web server is up.
+
+curl is a tool that makes a web request to a server.
+The server responds with data — for websites, that data is usually HTML, Instead of HTML, APIs return JSON or XML.
+Automation → Scripts use curl to fetch data from websites or APIs without needing a browser.
+
+   wget
+Purpose: Download files from the internet.
+Command:
+wget https://example.com/file.zip
+
+  curl → shows content.
+  wget → saves to a file.
+
+Checking Your IP Address
+ Every machine on a network has an IP.
+Command : 
+ip addr
+Shows :
+inet 127.0.0.1/8
+
+That’s your machine’s IP
+  IP required to connect via SSH or to check connectivity.
+
+Ports
+ Your computer runs services (like ssh, web servers, databases).
+ Each service listens on a port.
+ SSH → Port 22
+ HTTP (web) → Port 80
+ HTTPS → Port 443
+
+Command:
+ss -tulnp
+Options explained:
+
+-t → Show TCP sockets
+-u → Show UDP sockets
+-l → Show listening ports only (services waiting for connections)
+-n → Show port numbers (not service names)
+-p → Show the process using the port
+
+use sudo ss -tulnp 
+to see process name
+
+like ex understand like process ssh is running in port 22
+SSH is a service when managed by systemd, and it runs as one or more processes (like sshd) in the background.
+
+Note: 
+On AWS, you’ll see two IPs in the console:
+ Public IP (for outside connections — use from laptop).
+ Private IP (for inside AWS connections — use when SSHing between instances).
+
+Scenario
+You’re inside EC2 (via SSH)
+Connect to the same EC2 instance again
+ Use localhost or 127.0.0.1 (the loopback address).
+ ssh ubuntu@localhost
+ or
+ ssh ubuntu@127.0.0.1
+
+Connect from this EC2 instance → another EC2 instance
+ Use the Private IP of the other EC2
+ Example:
+ ssh ubuntu@10.0.1.25
+      Works only if both instances are in the same VPC / Security Group rules allow SSH between them
+
+Connect from your laptop (Git Bash) → your EC2
+Use the Public IP / Public DNS from AWS console.
+  Example:
+  ssh -i my-key.pem ubuntu@54.210.123.45
+
+Copying files with scp (Secure Copy)
+scp works like cp, but between two machines using SSH.
+
+Copy to remote:
+  scp file.txt user@host:/home/user/
+
+
+Copy from remote:
+  scp user@host:/home/user/file.txt .
+
+👉 The . means "current directory".
+
+Copy a file from Instance A → Instance B
+scp -i /home/ubuntu/demo-key.pem testfile ubuntu@52.90.109.158:/home/ubuntu/
+
+Copy a file from Instance B → Instance A
+scp -i /home/ubuntu/demo-key.pem ubuntu@52.90.109.158:/home/ubuntu/server.log /home/ubuntu/
+
+When copying from Instance A → Instance B, the target is Instance A.
+So you must use Instance A’s key (demo-key.pem) when running scp from Instance B.
+Example full command (inside Instance B):
+scp -i /home/ubuntu/demo-key.pem ubuntu@172.31.82.121:/home/ubuntu/data.log /home/ubuntu/
+/home/ubuntu/data.log → file on Instance A
+/home/ubuntu/ → destination on Instance B
+
+
+
