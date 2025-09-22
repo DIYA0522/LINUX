@@ -81,3 +81,10 @@ apt -- It’s the package manager used in Debian-based systems like Ubuntu.
 Installs, updates, upgrades, removes software.
 Basically, apt is your software app store in the terminal.
 
+apt update → refresh the package list (so your system knows the latest versions).
+apt upgrade → upgrade installed packages to newer versions.
+apt install nginx → install NGINX package.
+apt remove nginx → remove NGINX but keep config files.
+apt purge nginx → remove NGINX and its config files.
+apt search nginx → search for a package.
+apt show nginx → show details about a package.
