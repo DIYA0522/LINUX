@@ -1,0 +1,79 @@
+Package Management
+🔹 1. Updating Package Index (Debian/Ubuntu)
+
+Before installing anything, always refresh the list of available packages:
+
+sudo apt update
+
+This doesn’t install updates — it just fetches the latest package info from repositories.
+
+🔹 2. Installing Packages
+
+On Debian/Ubuntu:
+
+sudo apt install nginx
+
+
+On CentOS/RedHat:
+
+sudo yum install nginx
+
+🔹 3. Removing Packages
+
+Debian/Ubuntu:
+
+sudo apt remove nginx
+
+
+CentOS/RedHat:
+
+sudo yum remove nginx
+
+💡 If you want to remove config files too (Debian/Ubuntu):
+sudo apt purge nginx
+
+🔹 4. Updating/Upgrading Installed Software
+
+On Debian/Ubuntu:
+sudo apt upgrade
+
+
+On CentOS/RedHat:
+sudo yum update
+
+🔹 5. Checking Logs
+
+Most Linux logs are stored in /var/log/.
+Examples:
+System log: /var/log/syslog (Ubuntu/Debian) or /var/log/messages (RedHat).
+Authentication log: /var/log/auth.log
+Package manager logs:
+ Ubuntu: /var/log/apt/
+
+less /var/log/syslog
+  Opens the syslog file in read-only mode with the pager less
+  can scroll up and down
+  useful to view old logs
+
+tail -f /var/log/syslog
+  Shows the last 10 lines of the log file.
+  while -f stream live log entries
+  Good for real-time monitoring
+
+NGINX is a service (managed by systemd)
+
+A service is a program that runs in the background, usually managed by systemd.
+A process is an actual running instance of a program
+When you start Nginx, it launches processes to handle web requests.
+ You can see them with:
+ps aux | grep nginx
+
+ps -- process status.
+  Used to view running processes on your system.
+
+ps aux
+➡️ Shows all running processes in detail.
+
+ps aux | grep nginx
+This filters the process list to show only lines with "nginx".
+
