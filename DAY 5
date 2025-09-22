@@ -77,3 +77,7 @@ ps aux
 ps aux | grep nginx
 This filters the process list to show only lines with "nginx".
 
+apt -- It’s the package manager used in Debian-based systems like Ubuntu.
+Installs, updates, upgrades, removes software.
+Basically, apt is your software app store in the terminal.
+
