@@ -32,6 +32,9 @@ sudo yum remove nginx
 💡 If you want to remove config files too (Debian/Ubuntu):
 sudo apt purge nginx
 
+Optionally, clean unused packages:
+sudo apt autoremove
+
 🔹 4. Updating/Upgrading Installed Software
 
 On Debian/Ubuntu:
@@ -59,6 +62,9 @@ tail -f /var/log/syslog
   Shows the last 10 lines of the log file.
   while -f stream live log entries
   Good for real-time monitoring
+
+Or see the last few lines:
+  tail -n 20 /var/log/syslog
 
 NGINX is a service (managed by systemd)
 
@@ -88,3 +94,12 @@ apt remove nginx → remove NGINX but keep config files.
 apt purge nginx → remove NGINX and its config files.
 apt search nginx → search for a package.
 apt show nginx → show details about a package.
+
+Search and find the latest version
+apt search nginx
+
+Output has line like nginx/jammy 1.18.0
+v is 1.18.0
+
+
+
