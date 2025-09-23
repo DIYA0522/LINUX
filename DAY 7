@@ -1,0 +1,57 @@
+Backup Script
+Write a small automation script (e.g., backup files, check disk usage).
+Check disk usage script already done in Day 4
+
+We automated a daily backup system → every time you run the script, it saves your /home/ubuntu/data into a new folder with that day’s date.
+
+Step 1: Create the source folder with some test files
+mkdir -p /home/ubuntu/data
+
+Step 2: Create the script
+
+Open a new script file:
+vim backup.sh
+----------------------
+#!/bin/bash
+
+# Source folder to back up
+src="/home/ubuntu/data"
+
+# Main backup directory
+backup_dir="/home/ubuntu/backups"
+
+# Backup folder with today's date
+dest="$backup_dir/backup_$(date +%F)"
+
+# Create the main backup folder (if not already present)
+mkdir -p "$backup_dir"
+
+# Create the dated backup folder
+mkdir -p "$dest"
+
+# Copy files into the dated folder
+cp -r "$src"/* "$dest"
+#cp -r $src/* $dest copies everything from the data folder into the new dated backup folder.
+#-r means recursive → include subfolders too.
+
+# Print success message
+echo "Backup completed at $dest"
+
+-------------------
+Step 3: Make it executable
+chmod u+x backup.sh
+
+Step 4: Run the script
+./backup.sh
+
+
+Output should be something like:
+Backup completed at /home/ubuntu/backups/backup_2025-09-23
+
+Step 5: Verify backup
+ls /home/ubuntu/backups/backup_$(date +%F)
+
+
+You should see:
+file1.txt  file2.txt
+
