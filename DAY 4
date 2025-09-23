@@ -3,6 +3,11 @@ Networking is about how your computer communicates with other systems. In Linux,
 Check if another machine or website is reachable
   ping google.com
 
+ping 4 times
+ping -c 4 google.com
+-c 4 → count = 4 packets
+  Only 4 packets send
+
 Your system sends small "echo request" packets and check if he host is reachable.
  Stop with Ctrl + C
 
