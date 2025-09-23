@@ -26,6 +26,13 @@ curl is a tool that makes a web request to a server.
 The server responds with data — for websites, that data is usually HTML, Instead of HTML, APIs return JSON or XML.
 Automation → Scripts use curl to fetch data from websites or APIs without needing a browser.
 
+By default curl fetches the body of html/json
+curl --head https://example.com
+-I or --head → fetch HTTP headers only
+
+    Ping 4 times → ping -c 4 <host>
+    Get headers → curl -I <URL>
+
    wget
 Purpose: Download files from the internet.
 Command:
