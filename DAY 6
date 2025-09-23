@@ -1,0 +1,298 @@
+Shell Script
+
+A shell script is any script written for a Unix shell (command-line interpreter).
+The shell could be:
+Bash, sh, zsh etc
+
+Generic shell script
+#!/bin/sh
+echo "Hello from sh!"
+
+Bash Script
+
+A bash script is specifically a shell script written for Bash.
+Since Bash is the default on most Linux systems, people say "shell script" but often mean "bash script".
+
+#!/bin/bash
+name="Diya"
+echo "Hello, $name!"
+
+Think of it like this:
+👉 Shell script = general category
+👉 Bash script = one type of shell script --most popular shell script
+
+1. Bash Script Basics
+
+A shell script is just a text file with commands you normally type in the terminal.
+To tell Linux it’s a script:
+
+#!/bin/bash
+This is called the shebang — it says “run this file using bash”.
+
+Example:
+
+vim myscript.sh
+#!/bin/bash
+echo "Hello, World!"
+
+
+Run it:
+chmod +x myscript.sh   # make it executable 
+./myscript.sh            # and run it
+
+2. Variables
+
+You can store values in variables.
+
+#!/bin/bash
+name="Diya"
+echo "Hello, $name!"
+
+3. Conditionals
+
+Conditionals let your script make decisions
+The basic structure:
+
+if [ condition ]; then
+    # commands if true
+else
+    # commands if false
+fi
+
+
+if → starts the condition.
+else → optional block (runs if condition is false).
+fi → ends the whole if-else block.
+
+1. Simple if
+#!/bin/bash
+
+age=20
+
+if [ $age -ge 18 ]; then
+    echo "You are an adult."
+fi
+
+2. If–else
+#!/bin/bash
+
+num=5
+
+if [ $num -gt 10 ]; then
+    echo "Number is greater than 10"
+else
+    echo "Number is 10 or less"
+fi
+
+3. If–elif–else
+#!/bin/bash
+
+marks=85
+
+if [ $marks -ge 90 ]; then
+    echo "Grade: A"
+elif [ $marks -ge 75 ]; then
+    echo "Grade: B"
+else
+    echo "Grade: C"
+fi
+
+Operators you’ll use
+
+    Numbers:
+-eq (equal), -ne (not equal)
+-lt (less than), -le (less or equal)
+-gt (greater than), -ge (greater or equal)
+
+    Strings:
+= (equal), != (not equal)
+-z string (empty), -n string (not empty)
+
+    Files:
+-e file (exists), -f file (is a regular file), -d dir (is a directory)
+
+Example (file check)
+#!/bin/bash
+
+if [ -f /etc/passwd ]; then
+    echo "File exists"
+else
+    echo "File not found"
+fi
+
+[ -f /etc/passwd ] → checks if /etc/passwd exists AND is a regular file.
+
+🔹 2. One-liner in terminal
+
+You can also do a quick check without a script:
+[ -f /etc/passwd ] && echo "File exists" || echo "File missing"
+
+
+&& → runs next command if condition is true
+|| → runs next command if condition is false
+
+-f does not check directories — only regular files.
+Use -e if you want to check for any type of file exists
+
+1. [ ] (single brackets)
+
+POSIX-compliant, works in all shells (sh, bash, dash).
+Treats everything as a command called test.
+
+Limited in features:
+Cannot use && or || inside [ ] for logical AND/OR.
+String comparison needs careful quoting ("$var").
+
+#!/bin/bash
+num=5
+
+if [ $num -gt 3 ]; then
+  echo "Greater than 3"
+fi
+
+2. [[ ]] (double brackets)
+
+Bash-specific (not POSIX, won’t work in plain sh).
+More powerful and safer:
+Supports && and || inside the brackets.
+No need to quote variables in most cases (handles spaces safely).
+Supports pattern matching (==, !=, =~ regex).
+
+Example:
+
+#!/bin/bash
+num=5
+
+if [[ $num -gt 3 && $num -lt 10 ]]; then
+  echo "Between 3 and 10"
+fi
+
+
+String pattern matching:
+
+file="example.txt"
+if [[ $file == *.txt ]]; then
+  echo "Text file"
+fi
+
+
+🔹 Key point
+
+Always quote variables in [ ] when comparing strings:
+if [ "$var" = "something" ]; then …
+
+
+If you use [[ ]] instead, quotes are optional, because [[ ]] handles spaces safely:
+if [[ $var = "something" ]]; then …
+
+4. Loops
+
+1. for loop
+Used when you know how many times you want to iterate.
+
+Example 1: Iterating over a list
+for fruit in apple banana cherry
+do
+  echo "I like $fruit"
+done
+
+Example 2: Iterating over numbers
+for i in {1..5}
+do
+  echo "Number: $i"
+done
+
+2. while loop
+Runs as long as the condition is true.
+
+count=1
+while [ $count -le 5 ]
+do
+  echo "Count is $count"
+  ((count++))   # increment
+done
+
+3. until loop
+Runs until the condition becomes true (opposite of while).
+
+count=1
+until [ $count -gt 5 ]
+do
+  echo "Count is $count"
+  ((count++))
+done
+
+4. Loop with break and continue
+
+break → exit the loop early
+continue → skip current iteration, move to next
+
+for i in {1..5}
+do
+  if [ $i -eq 3 ]; then
+    echo "Skipping 3"
+    continue
+  fi
+  if [ $i -eq 4 ]; then
+    echo "Breaking at 4"
+    break
+  fi
+  echo "Number: $i"
+done
+
+✅ Final Output
+Number: 1
+Number: 2
+Skipping 3
+Breaking at 4
+
+Reading files line by line with a loop is super common in DevOps scripting
+
+Reading a file line by line
+Suppose you have a file names.txt:
+
+Alice
+Bob
+Charlie
+David
+
+Method 1: Using while read
+
+while IFS= read -r line
+do
+  echo "Name: $line"
+done < names.txt
+
+Explanation:
+
+IFS= → prevents trimming leading/trailing spaces
+-r → prevents backslashes (\) from being treated as escape characters
+< names.txt → redirects the file into the loop
+
+Reading /etc/passwd
+while IFS=: read -r username password uid gid info home shell
+do
+  echo "User: $username | Home: $home | Shell: $shell"
+done < /etc/passwd
+
+
+👉 This will parse each user entry in /etc/passwd.
+
+✅ Method 2: Using for with cat
+for line in $(cat names.txt)
+do
+  echo "Name: $line"
+done
+
+⚠️ But this method is not recommended because it splits on spaces/tabs too, not just newlines.
+
+✅ Method 3: Using mapfile
+mapfile -t lines < names.txt
+for line in "${lines[@]}"
+do
+  echo "Name: $line"
+done
+
+-t removes the newline at the end of each line.
+👉 mapfile reads the whole file into an array.
+
