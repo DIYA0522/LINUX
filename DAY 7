@@ -1,1 +1,20 @@
+Create User
+sudo useradd demouser          -- default primary group of demouser is demouser  
+
+Create Group
+sudo groupadd demogroup
+
+To change primary group of user
+sudo usermod -g demogroup demouser    --now primary group changed of demouser is demogroup
+
+To add this user to secondary group sudo
+sudo usermod -aG sudo devuser     
+
+List all users
+
+Users are listed in /etc/passwd.
+cat /etc/passwd
+
+Or, to see only usernames:
+cut -d: -f1 /etc/passwd
 
