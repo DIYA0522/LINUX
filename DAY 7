@@ -1,3 +1,4 @@
+🔹Create Users & Set Permissions
 Create User
 sudo useradd demouser          -- default primary group of demouser is demouser  
 
@@ -17,4 +18,56 @@ cat /etc/passwd
 
 Or, to see only usernames:
 cut -d: -f1 /etc/passwd
+
+# Check ownership of a file
+ls -l file.txt  
+
+# Change ownership
+sudo chown devuser:devuser file.txt  
+
+# Change permissions
+chmod 600 file.txt    # Owner read/write only
+chmod 755 script.sh   # Owner all, others read/execute
+
+🔹Write a Script to Monitor CPU Usage
+
+Create cpu_monitor.sh:
+
+#!/bin/bash
+# Simple CPU usage monitor
+
+THRESHOLD=80
+
+usage=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
+usage=${usage%.*}   # remove decimals
+
+echo "Current CPU usage: $usage%"
+
+if [ "$usage" -gt "$THRESHOLD" ]; then
+    echo "Warning: CPU usage is above $THRESHOLD%!"
+fi
+
+
+Make it executable:
+
+chmod +x cpu_monitor.sh
+./cpu_monitor.sh
+
+🔹Deploy a Service (Apache or Nginx)
+
+Example with Nginx:
+
+sudo apt update
+sudo apt install nginx -y
+
+# Start service
+sudo systemctl start nginx
+
+# Check status
+systemctl status nginx
+
+# Stop service
+sudo systemctl stop nginx
+
+Then, open browser → http://<your-server-ip> → you should see the Nginx welcome page 🎉
 
