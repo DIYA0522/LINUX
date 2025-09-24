@@ -71,3 +71,12 @@ sudo systemctl stop nginx
 
 Then, open browser → http://<your-server-ip> → you should see the Nginx welcome page 🎉
 
+🔹Revise Frequent Commands
+
+ls, cd, pwd, cp, mv, rm
+cat, less, tail -f
+ps aux, top, htop
+systemctl start|stop|status <service>
+apt update, apt install, apt remove
+chmod, chown, groups, id
+
